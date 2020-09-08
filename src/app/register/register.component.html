@@ -1,26 +1,55 @@
-<div class="grid-container">
-  <div class="grid-x">
-    <div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 cell">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <h2>Sign Up</h2>
-        <p>Please enter your details</p>
-        <label class="full-width-input">
-          Email
-          <input type="text" placeholder="Email" formControlName="email" required>
-        </label>
-        <label class="full-width-input">
-          Name
-          <input type="text" placeholder="Name" formControlName="username" required>
-        </label>
-        <label class="full-width-input">
-          Password
-          <input type="password" placeholder="Password" formControlName="password" required>
-        </label>
-        <button class="button">Register</button>
+<div class="col-md-6 offset-md-3 mt-5">
+  <mdb-card>
+    <mdb-card-header class="info-color white-text text-center py-3">
+      <h4><strong>Register</strong></h4>
+    </mdb-card-header>
+
+    <!--Card content-->
+    <mdb-card-body class="px-lg-5 pt-0">
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-center" style="color: #757575;">
+
+        <div class="form-row">
+          <div class="col">
+            <!-- First name -->
+            <div class="md-form">
+              <input type="text" formControlName="firstName" class="form-control" mdbInput>
+              <label for="firstName">First Name</label>
+            </div>
+          </div>
+          <div class="col">
+            <!-- Last name -->
+            <div class="md-form">
+              <input type="text" formControlName="lastName" class="form-control" mdbInput>
+              <label for="email">Last Name</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="md-form mt-0">
+          <input type="text" formControlName="username" class="form-control" mdbInput>
+          <label for="username">Username</label>
+        </div>
+
+        <!-- E-mail -->
+        <div class="md-form mt-0">
+          <input type="email" formControlName="email" class="form-control" mdbInput>
+          <label for="email">E-mail</label>
+        </div>
+
+        <!-- Password -->
+        <div class="md-form mt-0">
+          <input type="password" formControlName="password" class="form-control" aria-describedby="registerFormPasswordHelpBlock"
+            mdbInput>
+          <label for="password">Password</label>
+        </div>
+
+        <!-- Register button -->
+        <button mdbBtn color="info" block="true" class="my-4" type="submit">Register</button>
+
       </form>
-      <div class="login-link">
-        Already registered? <a routerLink="/login">Login Here!</a>
-      </div>
-    </div>
-  </div>
+
+    </mdb-card-body>
+  </mdb-card>
 </div>

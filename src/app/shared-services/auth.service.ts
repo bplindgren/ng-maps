@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   login(user) {
-    if(user.email !== '' && user.password !== '') {
+    if(user.username !== '' && user.password !== '') {
       return this.server.request('POST', '/authenticate', {
         username: user.username,
         password: user.password
@@ -33,7 +33,8 @@ export class AuthService {
           this.server.setLoggedIn(true, this.token);
           this.loggedIn.next(true);
           const userData = { token: this.token };
-          localStorage.setItem('user', JSON.stringify(userData));
+          localStorage.setItem('username', user.username);
+          localStorage.setItem('token', userData.token);
           this.router.navigate(['/user']);
         }
       });

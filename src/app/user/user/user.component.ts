@@ -13,7 +13,7 @@ export class UserComponent implements OnInit {
   constructor(private server: ServerService) { }
 
   ngOnInit(): void {
-    this.server.request('GET', '/user').subscribe((user: any) => {
+    this.server.request('GET', '/users/' + localStorage.username).subscribe((user: any) => {
       if(user) {
         this.username = user.username;
         this.email = user.email;

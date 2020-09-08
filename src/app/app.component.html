@@ -1,16 +1,4 @@
-<div class="top-bar" *ngIf="authService.isLoggedIn | async as isLoggedIn">
-  <div class="top-bar-left">
-    <a class="logo" routerLink="/">MyApp</a>
-  </div>
-  <div class="top-bar-right show-for-medium">
-    <ul class="menu">
-      <li><a  routerLink="/user">Profile</a></li>
-      <li><a (click)="onLogout()">Logout</a></li>
-    </ul>
-  </div>
-</div>
-
-<!-- <nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color">
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color">
   <a class="navbar-brand" href="/"><img src="https://cdn3.iconfinder.com/data/icons/small-business-shopping/32/small_biz_icons-11-512.png" height="40" class="d-inline-block align-top" alt="mdb logo"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-333"
     aria-controls="navbarSupportedContent-333" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,9 +48,7 @@
           aria-labelledby="navbarDropdownMenuLink-333">
           <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+              <a class="dropdown-item" (click)="onLogout()">Logout</a>
             </div>
             <div *ngSwitchCase="false">
               <a class="dropdown-item" routerLink="/login">Login</a>
@@ -72,7 +58,7 @@
       </li>
     </ul>
   </div>
-</nav> -->
+</nav>
 
 <!-- main app container -->
 <div class="container">

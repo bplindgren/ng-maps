@@ -12,6 +12,10 @@ export class AppComponent {
 
   constructor(private authService: AuthService, private userService: UserService) { }
 
+  isAuthenticated(): boolean {
+    return localStorage.hasOwnProperty('token');
+  }
+
   onLogout() {
     this.authService.logout();
   }

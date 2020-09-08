@@ -30,18 +30,15 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log("submitting login form");
     this.loginInvalid = false;
     this.formSubmitAttempt = false;
     if (this.form.valid) {
       try {
         await this.authService.login(this.form.value);
       } catch (err) {
-        console.log('error: ' + err);
         this.loginInvalid = true;
       }
     } else {
-      console.log("form invalid");
       this.formSubmitAttempt = true;
     }
   }

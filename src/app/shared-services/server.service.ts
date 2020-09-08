@@ -22,8 +22,6 @@ export class ServerService {
 
     const header = (this.loggedIn) ? { 'Authorization': `Bearer ${this.token}` } : { 'Access-Control-Allow-Origin': '*' };
 
-    console.log(header);
-
     return this.http.request(method, this.baseUrl + route, {
       body: data,
       responseType: 'json',
@@ -33,7 +31,7 @@ export class ServerService {
   }
 
   get(route: string, data?: any) {
-    const header = (this.loggedIn) ? { "Authorization": `Bearer ${this.token}` } : undefined;
+    const header = (this.loggedIn) ? { 'Authorization': `Bearer ${this.token}`, 'Access-Control-Allow-Origin': '*' } : undefined;
 
     let params = new HttpParams();
     if (data !== undefined) {
