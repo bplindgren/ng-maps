@@ -1,0 +1,36 @@
+<div class="col-md-6 offset-md-3 mt-5">
+  <mdb-card>
+    <mdb-card-header class="info-color white-text text-center py-3">
+      <h4><strong>Login</strong></h4>
+    </mdb-card-header>
+
+    <!--Card content-->
+    <mdb-card-body class="px-lg-5 pt-0">
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-center" style="color: #757575;">
+
+        <!-- Username -->
+        <div class="md-form">
+          <input type="text" formControlName="username" class="form-control" mdbInput>
+          <label for="username">Username</label>
+        </div>
+
+        <!-- Password -->
+        <div class="md-form mt-0">
+          <input type="password" formControlName="password" class="form-control" mdbInput>
+          <label for="password">Password</label>
+        </div>
+
+        <!-- Login button -->
+        <button mdbBtn color="info" block="true" class="my-4" type="submit">Login</button>
+
+        <!-- Register -->
+        <div class="register-link">
+          Not registered? <a routerLink="/register">Register Now</a>
+        </div>
+      </form>
+
+    </mdb-card-body>
+
+  </mdb-card>
+</div>
