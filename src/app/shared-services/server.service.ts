@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
 
 @Injectable({ providedIn: 'root' })
 export class ServerService {
   private baseUrl = 'http://localhost:8080';
-  private loggedIn = false;
-  private token: string;
+  public loggedIn = false;
+  public token: string;
 
   constructor(private http: HttpClient) { }
 
-  setLoggedIn(loggedIn: boolean, token?: string) {
+  setLoggedIn(loggedIn: boolean, token?: string): Observable<Boolean> {
     this.loggedIn = loggedIn;
     this.token = token;
+    // of automatically creates an Observable
+    return of(true);
   }
 
   request(method: string, route: string, data?: any) {
