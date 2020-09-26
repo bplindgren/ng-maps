@@ -1,18 +1,22 @@
+import { OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ServerService } from './server.service';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
-export class AuthService {
+export class AuthService implements OnInit {
   private loggedIn = new BehaviorSubject<boolean>(false);
   private token: string;
 
-  get isLoggedIn() {
-    return this.loggedIn.asObservable();
+  constructor(
+    private router: Router,
+    private server: ServerService,
+    public jwtHelperService: JwtHelperService) {
   }
 
-  constructor(private router: Router, private server: ServerService) {
+  ngOnInit(): void {
     const userData = localStorage.getItem('user');
     if (userData) {
       const user = JSON.parse(userData);
@@ -20,6 +24,11 @@ export class AuthService {
       this.server.setLoggedIn(true, this.token);
       this.loggedIn.next(true);
     }
+  }
+
+  public isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    return !this.jwtHelperService.isTokenExpired(token);
   }
 
   login(user) {
@@ -30,12 +39,16 @@ export class AuthService {
       }).subscribe((response: any) => {
         if(response && response.token !== undefined) {
           this.token = response.token;
-          this.server.setLoggedIn(true, this.token);
           this.loggedIn.next(true);
           const userData = { token: this.token };
           localStorage.setItem('username', user.username);
           localStorage.setItem('token', userData.token);
-          this.router.navigate(['/user']);
+          this.server.setLoggedIn(true, this.token).subscribe(res => {
+            if (res === true) {
+              this.router.navigate(['/user']);
+            }
+          });
+
         }
       });
     }
