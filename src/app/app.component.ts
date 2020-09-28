@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './shared-services/auth.service';
-import { UserService } from './user/user-service/user.service';
+import { ServerService } from './shared-services/server.service';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +10,10 @@ import { UserService } from './user/user-service/user.service';
 export class AppComponent {
   title = 'ng-maps';
 
-  constructor(private authService: AuthService, private userService: UserService) { }
+  constructor(private authService: AuthService, private serverService: ServerService) { }
 
   isAuthenticated(): boolean {
-    return localStorage.hasOwnProperty('token');
+    return this.authService.isAuthenticated();
   }
 
   onLogout() {

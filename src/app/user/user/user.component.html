@@ -1,15 +1,57 @@
-<div class="grid-container">
-  <div class="grid-x">
-    <div class="small-12 medium-10 medium-offset-1 large-8 large-offset-2 cell">
-      <h2>Profile</h2>
-      <h3>Name</h3>
-      <p *ngIf="username">
-        {{username}}
-      </p>
-      <h3>Email</h3>
-      <p *ngIf="email">
-        {{email}}
-      </p>
-    </div>
-  </div>
+<div class="col-md-6 offset-md-3 mt-5">
+  <mdb-card>
+    <mdb-card-header class="info-color white-text text-center py-3">
+      <h4><strong>User Profile</strong></h4>
+    </mdb-card-header>
+
+    <!--Card content-->
+    <mdb-card-body class="px-lg-5 pt-0">
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-center" style="color: #757575;">
+
+        <div class="form-row">
+          <div class="col">
+            <!-- First name -->
+            <div class="md-form">
+              <input type="text" formControlName="firstName" class="form-control" mdbInput>
+              <label for="firstName">First Name</label>
+            </div>
+          </div>
+          <div class="col">
+            <!-- Last name -->
+            <div class="md-form">
+              <input type="text" formControlName="lastName" class="form-control" mdbInput>
+              <label for="email">Last Name</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="md-form mt-0">
+          <input type="text" formControlName="username" class="form-control" mdbInput>
+          <label for="username">Username</label>
+        </div>
+
+        <!-- E-mail -->
+        <div class="md-form mt-0">
+          <input type="email" formControlName="email" class="form-control" mdbInput>
+          <label for="email">E-mail</label>
+        </div>
+
+        <!-- Edit & Submit Buttons -->
+        <div class="form-row">
+          <!-- Edit button -->
+          <div class="col">
+            <button mdbBtn [disabled]="isEditing" color="warning" block="true" class="my-4" (click)="startEditSession()">Edit</button>
+          </div>
+
+          <!-- Save button -->
+          <div class="col">
+            <button mdbBtn [disabled]="!isEditing" color="success" block="true" class="my-4" type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+
+    </mdb-card-body>
+  </mdb-card>
 </div>
