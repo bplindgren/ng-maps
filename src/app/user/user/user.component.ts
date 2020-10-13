@@ -15,6 +15,7 @@ export class UserComponent implements OnInit {
   form: FormGroup;
   user: User;
   isEditing: boolean = false;
+  hasSubmittedAttempt: Boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,44 +26,55 @@ export class UserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      email: ['', Validators.email]
-    });
-    this.form.disable();
-    this.getUser(localStorage.username);
-  }
-
-  getUser(username: string): void {
-    this.userService.getUserByUsername(username).subscribe((user: any) => {
+    this.userService.getUserByUsername(localStorage.username).subscribe((user: any) => {
       if(user) {
         this.user = user;
-        this.form.setValue({
-          firstName: user.firstName,
-          lastName: user.lastName,
-          username: user.username,
-          email: user.email
-        })
+        this.form = this.formBuilder.group({
+          firstName: [user.firstName, Validators.required],
+          lastName: [user.lastName, Validators.required],
+          username: [user.username, Validators.required],
+          email: [user.email, { validators: Validators.compose([Validators.required, Validators.email]), updateOn: 'blur' }]
+        });
       }
     }), (err) => {
       console.log(err);
     };
   }
 
+  get firstName() { return this.form.get('firstName'); }
+  get lastName() { return this.form.get('lastName'); }
+  get username() { return this.form.get('username'); }
+  get email() { return this.form.get('email'); }
+
   startEditSession() {
     this.isEditing = true;
     this.form.enable();
+    this.form.controls.username.disable();
+  }
+
+  cancelEditSession() {
+    this.form.setValue({
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      username: this.user.username,
+      email: this.user.email
+    });
+    this.endEditSession();
+  }
+
+  endEditSession() {
+    this.isEditing = false;
+    this.form.disable();
+    this.hasSubmittedAttempt = false;
   }
 
   onSubmit() {
-    if(!this.form.valid) {
+    if(this.form.invalid) {
+      this.hasSubmittedAttempt = true;
       return;
     }
 
-    this.isEditing = false;
-    this.form.disable();
+    this.hasSubmittedAttempt = false;
 
     const request = this.server.request('PUT', '/users', {
       id: this.user.id,
@@ -70,11 +82,9 @@ export class UserComponent implements OnInit {
       lastName: this.form.get('lastName').value,
       username: this.form.get('username').value,
       email: this.form.get('email').value
+    }).subscribe((res) => {
+      this.endEditSession();
     });
-
-    request.subscribe((res) => {
-      console.log(res);
-    });
-  }
+  };
 
 }
