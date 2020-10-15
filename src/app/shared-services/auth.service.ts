@@ -45,7 +45,7 @@ export class AuthService implements OnInit {
           localStorage.setItem('token', userData.token);
           this.server.setLoggedIn(true, this.token).subscribe(res => {
             if (res === true) {
-              this.router.navigate(['/user']);
+              this.router.navigate(['/home']);
             }
           });
 
