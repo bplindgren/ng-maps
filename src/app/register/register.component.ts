@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ServerService } from '../shared-services/server.service';
+import { AuthService } from '../shared-services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,10 +11,12 @@ import { ServerService } from '../shared-services/server.service';
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
+  hasSubmittedAttempt: Boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private server: ServerService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
@@ -21,14 +24,21 @@ export class RegisterComponent implements OnInit {
     this.form = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      email: ['', Validators.email],
-      password: ['', Validators.compose([Validators.required, Validators.minLength(8)])]
+      username: ['', { validators: Validators.compose([Validators.required, Validators.minLength(8)]), updateOn: 'blur' }],
+      email: ['', { validators: Validators.compose([Validators.required, Validators.email]), updateOn: 'blur' }],
+      password: ['', { validators: Validators.compose([Validators.required, Validators.minLength(8)]), updateOn: 'blur' }]
     });
   }
 
+  get firstName() { return this.form.get('firstName'); }
+  get lastName() { return this.form.get('lastName'); }
+  get username() { return this.form.get('username'); }
+  get email() { return this.form.get('email'); }
+  get password() { return this.form.get('password'); }
+
   onSubmit() {
-    if(!this.form.valid) {
+    if(this.form.invalid) {
+      this.hasSubmittedAttempt = true;
       return;
     }
 
@@ -38,10 +48,8 @@ export class RegisterComponent implements OnInit {
       username: this.form.get('username').value,
       email: this.form.get('email').value,
       password: this.form.get('password').value
-    });
-
-    request.subscribe(() => {
-      this.router.navigate(['/login']);
+    }).subscribe((res) => {
+      this.authService.login({ username: this.form.get('username').value, password: this.form.get('password').value });
     })
   }
 

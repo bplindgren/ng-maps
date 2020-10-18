@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ServerService } from './server.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService implements OnInit {
@@ -31,27 +32,32 @@ export class AuthService implements OnInit {
     return !this.jwtHelperService.isTokenExpired(token);
   }
 
-  login(user) {
-    if(user.username !== '' && user.password !== '') {
-      return this.server.request('POST', '/authenticate', {
-        username: user.username,
-        password: user.password
-      }).subscribe((response: any) => {
-        if(response && response.token !== undefined) {
-          this.token = response.token;
-          this.loggedIn.next(true);
-          const userData = { token: this.token };
-          localStorage.setItem('username', user.username);
-          localStorage.setItem('token', userData.token);
-          this.server.setLoggedIn(true, this.token).subscribe(res => {
-            if (res === true) {
-              this.router.navigate(['/user']);
-            }
-          });
-
-        }
-      });
-    }
+  async login(user) {
+    return await this.server.request('POST', '/authenticate', {
+      username: user.username,
+      password: user.password
+    }).subscribe(
+        (res: HttpResponse<any>) => {
+          // console.log('HTTP response', res)
+          if(res && res !== undefined) {
+            this.token = res.body.token;
+            this.loggedIn.next(true);
+            const userData = { token: this.token };
+            localStorage.setItem('username', user.username);
+            localStorage.setItem('token', userData.token);
+            this.server.setLoggedIn(true, this.token).subscribe(res => {
+              if (res === true) {
+                this.router.navigate(['/home']);
+              }
+            });
+          }
+        },
+        err => {
+          // console.log('HTTP Error', err)
+          return err;
+        },
+        () => { console.log('HTTP request completed.') }
+      )
   }
 
   logout() {
