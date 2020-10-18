@@ -48,7 +48,7 @@
           aria-labelledby="navbarDropdownMenuLink-333">
           <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
-              <a class="dropdown-item" routerLink="/user">View Profile</a>
+              <a class="dropdown-item" routerLink="/user-profile">View Profile</a>
               <a class="dropdown-item" (click)="onLogout()">Logout</a>
             </div>
             <div *ngSwitchCase="false">

@@ -11,18 +11,30 @@
 
         <!-- Username -->
         <div class="md-form">
-          <input type="text" formControlName="username" class="form-control" mdbInput>
+          <input type="text" formControlName="username" class="form-control" mdbInput mdbValidate>
           <label for="username">Username</label>
+          <mdb-error *ngIf="username.invalid">
+            <div *ngIf="username.errors.required && (username.dirty || username.touched) || formSubmitAttempt">
+              Username is required
+            </div>
+          </mdb-error>
         </div>
 
         <!-- Password -->
         <div class="md-form mt-0">
-          <input type="password" formControlName="password" class="form-control" mdbInput>
+          <input type="password" formControlName="password" class="form-control" mdbInput mdbValidate>
           <label for="password">Password</label>
+          <mdb-error *ngIf="password.invalid">
+            <div *ngIf="password.errors.required && (password.dirty || password.touched) || formSubmitAttempt">
+              Password is required
+            </div>
+          </mdb-error>
         </div>
 
         <!-- Login button -->
         <button mdbBtn color="info" block="true" class="my-4" type="submit">Login</button>
+
+        <p id="form-error" [hidden]="!displayError">Username and Password don't match any of our records</p>
 
         <!-- Register -->
         <div class="register-link">

@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   public loginInvalid: boolean;
   public formSubmitAttempt: boolean;
+  public displayError: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,6 +25,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  get username() { return this.form.get('username'); }
+  get password() { return this.form.get('password'); }
+
   // convenience getter for easy access to form fields
   getFormControls() {
     return this.form.controls;
@@ -34,11 +38,16 @@ export class LoginComponent implements OnInit {
     this.formSubmitAttempt = false;
     if (this.form.valid) {
       try {
-        await this.authService.login(this.form.value);
+        await this.authService.login(this.form.value)
+        setTimeout(() => {
+          this.displayError = true;
+        }, 2000)
       } catch (err) {
         this.loginInvalid = true;
+        this.formSubmitAttempt = true;
       }
     } else {
+      this.loginInvalid = true;
       this.formSubmitAttempt = true;
     }
   }

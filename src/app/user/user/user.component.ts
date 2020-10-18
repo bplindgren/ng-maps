@@ -36,6 +36,7 @@ export class UserComponent implements OnInit {
           email: [user.email, { validators: Validators.compose([Validators.required, Validators.email]), updateOn: 'blur' }]
         });
       }
+      this.form.disable();
     }), (err) => {
       console.log(err);
     };
