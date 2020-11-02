@@ -1,3 +1,5 @@
+import { Point } from './interfaces/point';
+
 export class User {
   id: number;
   username: string;
@@ -9,4 +11,5 @@ export class User {
   createdDate: Date;
   lastModifiedBy: string;
   lastModifiedDate: Date;
+  location: Point;
 }

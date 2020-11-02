@@ -1,21 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service/user.service';
 import { ServerService } from '../../shared-services/server.service';
 import { AuthService } from '../../shared-services/auth.service';
+
 import { User } from '../../models/user';
+import { Coordinate } from '../../models/interfaces/coordinate';
+import { Point } from '../../models/interfaces/point';
+
+import { MapsAPILoader } from '@agm/core';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   user: User;
-  isEditing: boolean = false;
+  isEditing: Boolean = false;
   hasSubmittedAttempt: Boolean = false;
+  map: google.maps.Map;
+  marker: google.maps.Marker;
+  lat: number;
+  lng: number;
+
+  @ViewChild('mapContainer', { static: false }) gmap: ElementRef;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,8 +38,11 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUserByUsername(localStorage.username).subscribe((user: any) => {
-      if(user) {
+      if (user) {
+        console.log(user);
         this.user = user;
+        this.lng = user.location.coordinates[0];
+        this.lat = user.location.coordinates[1];
         this.form = this.formBuilder.group({
           firstName: [user.firstName, Validators.required],
           lastName: [user.lastName, Validators.required],
@@ -47,6 +61,34 @@ export class UserComponent implements OnInit {
   get username() { return this.form.get('username'); }
   get email() { return this.form.get('email'); }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      let coordinates = {lat: this.lat, lng: this.lng};
+
+      let mapOptions: google.maps.MapOptions = {
+        center: coordinates,
+        zoom: 8,
+        streetViewControl: false,
+        disableDoubleClickZoom: true
+      };
+
+      this.map = new google.maps.Map(this.gmap.nativeElement, mapOptions);
+
+      this.marker = new google.maps.Marker({
+        position: coordinates,
+        map: this.map,
+      });
+
+      this.map.addListener("click", ($event) => {
+        if(this.isEditing) {
+          this.marker.setPosition($event.latLng);
+        } else {
+          alert("Click edit to change your location!")
+        }
+      });
+    }, 500);
+  }
+
   startEditSession() {
     this.isEditing = true;
     this.form.enable();
@@ -60,6 +102,7 @@ export class UserComponent implements OnInit {
       username: this.user.username,
       email: this.user.email
     });
+    this.marker.setPosition({lat: this.lat, lng: this.lng});
     this.endEditSession();
   }
 
@@ -76,13 +119,15 @@ export class UserComponent implements OnInit {
     }
 
     this.hasSubmittedAttempt = false;
+    // console.log(this.marker.getPosition().lat(), this.marker.getPosition().lng());
 
     const request = this.server.request('PUT', '/users', {
       id: this.user.id,
       firstName: this.form.get('firstName').value,
       lastName: this.form.get('lastName').value,
       username: this.form.get('username').value,
-      email: this.form.get('email').value
+      email: this.form.get('email').value,
+      location: this.marker.getPosition()
     }).subscribe((res) => {
       this.endEditSession();
     });

@@ -32,8 +32,10 @@ export class UserService {
               let errorMsg: string;
               if (error.error instanceof ErrorEvent) {
                   errorMsg = `Error: ${error.error.message}`;
+                  console.log(errorMsg);
               } else {
                   errorMsg = this.getServerErrorMessage(error);
+                  console.log(errorMsg);
               }
 
               return throwError(errorMsg);
