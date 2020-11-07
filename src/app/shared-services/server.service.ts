@@ -24,8 +24,6 @@ export class ServerService {
 
     const header = (this.loggedIn) ? { 'Authorization': `Bearer ${this.token}` } : { 'Access-Control-Allow-Origin': '*' };
 
-    // console.log(data);
-
     return this.http.request(method, this.baseUrl + route, {
       body: data,
       responseType: 'json',

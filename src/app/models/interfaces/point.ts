@@ -1,10 +1,8 @@
-import { Coordinate } from './coordinate';
-
 export class Point {
-  constructor(coordinate: Coordinate, type: string) {
-    this.coordinate = coordinate;
+  constructor(type: string, coordinates: number[]) {
     this.type = type;
+    this.coordinates = coordinates;
   }
-  coordinate: Coordinate;
   type: string;
+  coordinates: number[];
 }

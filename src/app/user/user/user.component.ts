@@ -41,8 +41,10 @@ export class UserComponent implements OnInit, AfterViewInit {
       if (user) {
         console.log(user);
         this.user = user;
-        this.lng = user.location.coordinates[0];
-        this.lat = user.location.coordinates[1];
+        if (user.location) {
+          this.lng = user.location.coordinates[0];
+          this.lat = user.location.coordinates[1];
+        }
         this.form = this.formBuilder.group({
           firstName: [user.firstName, Validators.required],
           lastName: [user.lastName, Validators.required],
@@ -63,10 +65,13 @@ export class UserComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      let coordinates = {lat: this.lat, lng: this.lng};
+      let coordinates;
+      if (this.user.location) {
+        coordinates = {lat: this.lat, lng: this.lng};
+      }
 
       let mapOptions: google.maps.MapOptions = {
-        center: coordinates,
+        center: coordinates || {lat: -82, lng: 30},
         zoom: 8,
         streetViewControl: false,
         disableDoubleClickZoom: true
@@ -75,7 +80,7 @@ export class UserComponent implements OnInit, AfterViewInit {
       this.map = new google.maps.Map(this.gmap.nativeElement, mapOptions);
 
       this.marker = new google.maps.Marker({
-        position: coordinates,
+        position: {lat: -82, lng: 30},
         map: this.map,
       });
 
@@ -119,16 +124,21 @@ export class UserComponent implements OnInit, AfterViewInit {
     }
 
     this.hasSubmittedAttempt = false;
-    // console.log(this.marker.getPosition().lat(), this.marker.getPosition().lng());
 
-    const request = this.server.request('PUT', '/users', {
+    let data = {
       id: this.user.id,
       firstName: this.form.get('firstName').value,
       lastName: this.form.get('lastName').value,
       username: this.form.get('username').value,
       email: this.form.get('email').value,
-      location: this.marker.getPosition()
-    }).subscribe((res) => {
+      location: {
+        type: "Point",
+        coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
+      }
+    };
+
+    const request = this.server.request('PUT', '/users', data).subscribe((res) => {
+      console.log(res);
       this.endEditSession();
     });
   };
