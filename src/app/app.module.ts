@@ -18,6 +18,7 @@ import { AuthGuardService } from './shared-services/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user/user.component';
+import { UserMapComponent } from './user-map/user-map.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { UserComponent } from './user/user/user.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    UserComponent
+    UserComponent,
+    UserMapComponent
   ],
   imports: [
     BrowserModule,

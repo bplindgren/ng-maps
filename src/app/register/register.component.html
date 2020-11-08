@@ -71,6 +71,9 @@
           </mdb-error>
         </div>
 
+        <h6>Your Location:</h6>
+        <app-user-map [lat]="lat" [lng]="lng" [isEditing]="isEditing" [zoom]="zoom" (evtEmitterLocation)="updateLocation($event)"></app-user-map>
+
         <!-- Register button -->
         <button mdbBtn color="info" block="true" class="my-4" type="submit">Register</button>
 

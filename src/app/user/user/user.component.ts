@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service/user.service';
@@ -9,24 +9,19 @@ import { User } from '../../models/user';
 import { Coordinate } from '../../models/interfaces/coordinate';
 import { Point } from '../../models/interfaces/point';
 
-import { MapsAPILoader } from '@agm/core';
-
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit, AfterViewInit {
+export class UserComponent implements OnInit {
   form: FormGroup;
   user: User;
-  isEditing: Boolean = false;
-  hasSubmittedAttempt: Boolean = false;
-  map: google.maps.Map;
-  marker: google.maps.Marker;
-  lat: number;
-  lng: number;
-
-  @ViewChild('mapContainer', { static: false }) gmap: ElementRef;
+  @Output() isEditing: boolean = false;
+  hasSubmittedAttempt: boolean = false;
+  @Output() lat: number;
+  @Output() lng: number;
+  zoom: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,12 +34,20 @@ export class UserComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.userService.getUserByUsername(localStorage.username).subscribe((user: any) => {
       if (user) {
+        // process user, set lng & lat
         console.log(user);
         this.user = user;
         if (user.location) {
           this.lng = user.location.coordinates[0];
           this.lat = user.location.coordinates[1];
+          this.zoom = 6;
+        } else {
+          this.lng = -98;
+          this.lat = 39;
+          this.zoom = 3;
         }
+
+        //set up form
         this.form = this.formBuilder.group({
           firstName: [user.firstName, Validators.required],
           lastName: [user.lastName, Validators.required],
@@ -63,37 +66,6 @@ export class UserComponent implements OnInit, AfterViewInit {
   get username() { return this.form.get('username'); }
   get email() { return this.form.get('email'); }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      let coordinates;
-      if (this.user.location) {
-        coordinates = {lat: this.lat, lng: this.lng};
-      }
-
-      let mapOptions: google.maps.MapOptions = {
-        center: coordinates || {lat: -82, lng: 30},
-        zoom: 8,
-        streetViewControl: false,
-        disableDoubleClickZoom: true
-      };
-
-      this.map = new google.maps.Map(this.gmap.nativeElement, mapOptions);
-
-      this.marker = new google.maps.Marker({
-        position: {lat: -82, lng: 30},
-        map: this.map,
-      });
-
-      this.map.addListener("click", ($event) => {
-        if(this.isEditing) {
-          this.marker.setPosition($event.latLng);
-        } else {
-          alert("Click edit to change your location!")
-        }
-      });
-    }, 500);
-  }
-
   startEditSession() {
     this.isEditing = true;
     this.form.enable();
@@ -107,7 +79,8 @@ export class UserComponent implements OnInit, AfterViewInit {
       username: this.user.username,
       email: this.user.email
     });
-    this.marker.setPosition({lat: this.lat, lng: this.lng});
+    this.lng = this.user.location.coordinates[0];
+    this.lat = this.user.location.coordinates[1];
     this.endEditSession();
   }
 
@@ -115,6 +88,11 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.isEditing = false;
     this.form.disable();
     this.hasSubmittedAttempt = false;
+  }
+
+  updateLocation(coord: any) {
+    this.lat = coord.lat();
+    this.lng = coord.lng();
   }
 
   onSubmit() {
@@ -133,7 +111,7 @@ export class UserComponent implements OnInit, AfterViewInit {
       email: this.form.get('email').value,
       location: {
         type: "Point",
-        coordinates: [this.marker.getPosition().lng(), this.marker.getPosition().lat()]
+        coordinates: [this.lng, this.lat]
       }
     };
 

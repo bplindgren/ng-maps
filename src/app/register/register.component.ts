@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ServerService } from '../shared-services/server.service';
@@ -11,7 +11,11 @@ import { AuthService } from '../shared-services/auth.service';
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
-  hasSubmittedAttempt: Boolean = false;
+  hasSubmittedAttempt: boolean = false;
+  isEditing: boolean = true;
+  @Output() lat: number = -90;
+  @Output() lng: number = 39;
+  zoom: number = 3;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -21,6 +25,10 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // this.lng = -98;
+    // this.lat = 39;
+    // this.zoom = 3;
+
     this.form = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -36,6 +44,11 @@ export class RegisterComponent implements OnInit {
   get email() { return this.form.get('email'); }
   get password() { return this.form.get('password'); }
 
+  updateLocation(coord: any) {
+    this.lat = coord.lat();
+    this.lng = coord.lng();
+  }
+
   onSubmit() {
     if(this.form.invalid) {
       this.hasSubmittedAttempt = true;
@@ -47,7 +60,11 @@ export class RegisterComponent implements OnInit {
       lastName: this.form.get('lastName').value,
       username: this.form.get('username').value,
       email: this.form.get('email').value,
-      password: this.form.get('password').value
+      password: this.form.get('password').value,
+      location: {
+        type: "Point",
+        coordinates: [this.lng, this.lat]
+      }
     }).subscribe((res) => {
       this.authService.login({ username: this.form.get('username').value, password: this.form.get('password').value });
     })
