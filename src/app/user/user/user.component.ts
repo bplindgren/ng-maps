@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service/user.service';
 import { ServerService } from '../../shared-services/server.service';
 import { AuthService } from '../../shared-services/auth.service';
+
 import { User } from '../../models/user';
+import { Coordinate } from '../../models/interfaces/coordinate';
+import { Point } from '../../models/interfaces/point';
 
 @Component({
   selector: 'app-user',
@@ -14,8 +17,11 @@ import { User } from '../../models/user';
 export class UserComponent implements OnInit {
   form: FormGroup;
   user: User;
-  isEditing: boolean = false;
-  hasSubmittedAttempt: Boolean = false;
+  source: string = "user";
+  @Output() isEditing: boolean = false;
+  hasSubmittedAttempt: boolean = false;
+  @Output() lng: number;
+  @Output() lat: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,8 +33,15 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUserByUsername(localStorage.username).subscribe((user: any) => {
-      if(user) {
+      if (user) {
+        // process user, set lng & lat
         this.user = user;
+        if (user.location) {
+          this.lng = user.location.coordinates[0];
+          this.lat = user.location.coordinates[1];
+        }
+
+        //set up form
         this.form = this.formBuilder.group({
           firstName: [user.firstName, Validators.required],
           lastName: [user.lastName, Validators.required],
@@ -60,6 +73,8 @@ export class UserComponent implements OnInit {
       username: this.user.username,
       email: this.user.email
     });
+    this.lng = this.user.location.coordinates[0];
+    this.lat = this.user.location.coordinates[1];
     this.endEditSession();
   }
 
@@ -67,6 +82,11 @@ export class UserComponent implements OnInit {
     this.isEditing = false;
     this.form.disable();
     this.hasSubmittedAttempt = false;
+  }
+
+  updateLocation(coord: any) {
+    this.lat = coord.lat();
+    this.lng = coord.lng();
   }
 
   onSubmit() {
@@ -77,15 +97,22 @@ export class UserComponent implements OnInit {
 
     this.hasSubmittedAttempt = false;
 
-    const request = this.server.request('PUT', '/users', {
+    let data = {
       id: this.user.id,
       firstName: this.form.get('firstName').value,
       lastName: this.form.get('lastName').value,
       username: this.form.get('username').value,
-      email: this.form.get('email').value
-    }).subscribe((res) => {
+      email: this.form.get('email').value,
+      location: {
+        type: "Point",
+        coordinates: [this.lng, this.lat]
+      }
+    };
+
+    const request = this.server.request('PUT', '/users', data).subscribe((res) => {
+      this.user = res['body'];
       this.endEditSession();
     });
-  };
+  }
 
 }

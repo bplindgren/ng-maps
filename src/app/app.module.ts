@@ -4,6 +4,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Constants } from './models/keys';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { AuthGuardService } from './shared-services/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user/user.component';
+import { UserMapComponent } from './user-map/user-map.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { UserComponent } from './user/user/user.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    UserComponent
+    UserComponent,
+    UserMapComponent
   ],
   imports: [
     BrowserModule,
