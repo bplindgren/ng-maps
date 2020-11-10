@@ -48,8 +48,9 @@
           </mdb-error>
         </div>
 
+        <!-- google maps -->
         <h6>Your Location:</h6>
-        <app-user-map *ngIf="lat && lng" [lat]="lat" [lng]="lng" [isEditing]="isEditing" [zoom]="zoom" (evtEmitterLocation)="updateLocation($event)"></app-user-map>
+        <app-user-map *ngIf="lat && lng" [lat]="lat" [lng]="lng" [source]="source" [isEditing]="isEditing" (evtEmitterLocation)="updateLocation($event)"></app-user-map>
 
         <!-- Edit & Submit Buttons -->
         <div class="form-row">

@@ -17,11 +17,11 @@ import { Point } from '../../models/interfaces/point';
 export class UserComponent implements OnInit {
   form: FormGroup;
   user: User;
+  source: string = "user";
   @Output() isEditing: boolean = false;
   hasSubmittedAttempt: boolean = false;
-  @Output() lat: number;
   @Output() lng: number;
-  zoom: number;
+  @Output() lat: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,16 +35,10 @@ export class UserComponent implements OnInit {
     this.userService.getUserByUsername(localStorage.username).subscribe((user: any) => {
       if (user) {
         // process user, set lng & lat
-        console.log(user);
         this.user = user;
         if (user.location) {
           this.lng = user.location.coordinates[0];
           this.lat = user.location.coordinates[1];
-          this.zoom = 6;
-        } else {
-          this.lng = -98;
-          this.lat = 39;
-          this.zoom = 3;
         }
 
         //set up form
@@ -116,9 +110,9 @@ export class UserComponent implements OnInit {
     };
 
     const request = this.server.request('PUT', '/users', data).subscribe((res) => {
-      console.log(res);
+      this.user = res['body'];
       this.endEditSession();
     });
-  };
+  }
 
 }
