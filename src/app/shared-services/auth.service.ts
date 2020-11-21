@@ -37,27 +37,25 @@ export class AuthService implements OnInit {
       username: user.username,
       password: user.password
     }).subscribe(
-        (res: HttpResponse<any>) => {
-          // console.log('HTTP response', res)
-          if(res && res !== undefined) {
-            this.token = res.body.token;
-            this.loggedIn.next(true);
-            const userData = { token: this.token };
-            localStorage.setItem('username', user.username);
-            localStorage.setItem('token', userData.token);
-            this.server.setLoggedIn(true, this.token).subscribe(res => {
-              if (res === true) {
-                this.router.navigate(['/home']);
-              }
-            });
-          }
-        },
-        err => {
-          // console.log('HTTP Error', err)
-          return err;
-        },
-        () => { console.log('HTTP request completed.') }
-      )
+      (res: HttpResponse<any>) => {
+        if(res && res !== undefined) {
+          this.token = res.body.token;
+          this.loggedIn.next(true);
+          const userData = { token: this.token };
+          localStorage.setItem('username', user.username);
+          localStorage.setItem('token', userData.token);
+          this.server.setLoggedIn(true, this.token).subscribe(loggedInRes => {
+            if (loggedInRes === true) {
+              this.router.navigate(['/home']);
+            }
+          });
+        }
+      },
+      err => {
+        console.log('HTTP Error', err)
+      },
+      () => { console.log('HTTP request completed.') }
+    )
   }
 
   logout() {

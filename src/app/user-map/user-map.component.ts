@@ -20,15 +20,13 @@ export class UserMapComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     if(this.source == "register") {
       this.zoom = 3;
-      this.isEditing = true;
     } else if (this.source == "user") {
       this.zoom = 6;
-      this.isEditing = false;
     };
   }
 
   ngAfterViewInit(): void {
-    let coordinates = {lat: this.lat, lng: this.lng};
+    let coordinates = {lat: this.lat || 42, lng: this.lng || -95};
 
     let mapOptions: google.maps.MapOptions = {
       center: coordinates,
