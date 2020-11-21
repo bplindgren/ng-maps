@@ -17,12 +17,24 @@ export class ServerService {
     return of(true);
   }
 
+  getHeader(): any {
+    let header;
+    if (this.loggedIn) {
+      header = { 'Authorization': `Bearer ${this.token}`, 'Access-Control-Allow-Origin': '*' };
+    } else if (localStorage.token) {
+      this.token = localStorage.token;
+      this.loggedIn = true;
+      header = { 'Authorization': `Bearer ${localStorage.token}`, 'Access-Control-Allow-Origin': '*' };
+    }
+    return header;
+  }
+
   request(method: string, route: string, data?: any) {
     if (method === 'GET') {
       return this.get(route, data);
     }
 
-    const header = (this.loggedIn) ? { 'Authorization': `Bearer ${this.token}` } : { 'Access-Control-Allow-Origin': '*' };
+    const header = this.getHeader();
 
     return this.http.request(method, this.baseUrl + route, {
       body: data,
@@ -33,7 +45,7 @@ export class ServerService {
   }
 
   get(route: string, data?: any) {
-    const header = (this.loggedIn) ? { 'Authorization': `Bearer ${this.token}`, 'Access-Control-Allow-Origin': '*' } : undefined;
+    const header = this.getHeader();
 
     let params = new HttpParams();
     if (data !== undefined) {

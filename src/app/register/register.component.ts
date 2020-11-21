@@ -13,9 +13,10 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   hasSubmittedAttempt: boolean = false;
   source: string = "register";
-  isEditing: boolean = false;
-  @Output() lng: number = -95;
-  @Output() lat: number = 42;
+  @Output() isEditing: boolean = true;
+  @Output() lng: number;
+  @Output() lat: number;
+  displayError: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,8 +47,14 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.form.invalid) {
+    if (this.form.invalid) {
       this.hasSubmittedAttempt = true;
+      return;
+    }
+
+    if (this.lat === undefined || this.lng === undefined) {
+      this.hasSubmittedAttempt = true;
+      this.displayError = true;
       return;
     }
 

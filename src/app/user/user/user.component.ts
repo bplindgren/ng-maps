@@ -34,7 +34,6 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getUserByUsername(localStorage.username).subscribe((user: any) => {
       if (user) {
-        // process user, set lng & lat
         this.user = user;
         if (user.location) {
           this.lng = user.location.coordinates[0];
