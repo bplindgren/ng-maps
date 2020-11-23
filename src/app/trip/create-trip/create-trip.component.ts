@@ -13,6 +13,8 @@ export class CreateTripComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   hasSubmittedAttempt: boolean = false;
   map: any;
+  locations: number[][] = [];
+  displayError: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,7 +43,8 @@ export class CreateTripComponent implements OnInit, AfterViewInit {
     }).addTo(this.map);
 
     this.map.on('click', (e) => {
-      console.log(e);
+      L.marker(e.latlng).addTo(this.map);
+      this.locations.push([e.latlng.lng, e.latlng.lat]);
     })
   }
 
@@ -51,20 +54,25 @@ export class CreateTripComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    if (this.locations.length < 1) {
+      this.hasSubmittedAttempt = true;
+      this.displayError = true;
+      return;
+    }
+
     let data = {
       username: localStorage.username,
       title: this.form.get('title').value,
       startDate: this.form.get('startDate').value,
       endDate: this.form.get('endDate').value,
-      summary: this.form.get('summary').value//,
-      // geometry: {
-      //   type: "LineString",
-      //   coordinates: []
-      // }
+      summary: this.form.get('summary').value,
+      geometry: {
+        type: "LineString",
+        coordinates: this.locations
+      }
     };
 
     const request = this.server.request('POST', '/trips', data).subscribe((res) => {
-      console.log(res);
       this.router.navigate(['/trips']);
     })
 
