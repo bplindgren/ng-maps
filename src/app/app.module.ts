@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Constants } from './models/keys';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user/user.component';
 import { UserMapComponent } from './user-map/user-map.component';
+import { TripComponent } from './trip/trip/trip.component';
+import { CreateTripComponent } from './trip/create-trip/create-trip.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { UserMapComponent } from './user-map/user-map.component';
     LoginComponent,
     RegisterComponent,
     UserComponent,
-    UserMapComponent
+    UserMapComponent,
+    TripComponent,
+    CreateTripComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,8 @@ import { UserMapComponent } from './user-map/user-map.component';
     HttpClientModule,
     JwtModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LeafletModule
   ],
   providers: [ServerService, AuthService, UserService,
         { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
