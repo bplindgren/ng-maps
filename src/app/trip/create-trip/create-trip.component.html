@@ -1,0 +1,71 @@
+<div class="col-md-6 offset-md-3 mt-5">
+  <mdb-card>
+    <mdb-card-header class="info-color white-text text-center py-3">
+      <h4><strong>Create Trip</strong></h4>
+    </mdb-card-header>
+
+    <!--Card content-->
+    <mdb-card-body class="px-lg-5 pt-0">
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" style="color: #757575;">
+
+        <!-- Title -->
+        <div class="md-form mt-0 md-outline">
+          <input type="text" formControlName="title" class="form-control" mdbInput mdbValidate>
+          <label for="title">Title</label>
+          <mdb-error *ngIf="title.invalid">
+            <div *ngIf="title.errors.required && (title.touched || hasSubmittedAttempt)">
+              Title is required
+            </div>
+          </mdb-error>
+        </div>
+
+        <!-- Start Date -->
+        <p>Start Date:</p>
+        <div id="startDate" class="md-form md-outline mt-0 datepicker" mdbInput mdbValidate>
+          <input formControlName="startDate" type="date" class="form-control">
+          <mdb-error *ngIf="startDate.invalid">
+            <div *ngIf="startDate.errors.required && (startDate.touched || hasSubmittedAttempt)">
+              Start Date is required
+            </div>
+          </mdb-error>
+        </div>
+
+        <!-- End Date -->
+        <p>End Date:</p>
+        <div id="endDate" class="md-form md-outline mt-0 datepicker" mdbInput mdbValidate>
+          <input formControlName="endDate" type="date" class="form-control">
+          <mdb-error *ngIf="endDate.invalid">
+            <div *ngIf="endDate.errors.required && (endDate.touched || hasSubmittedAttempt)">
+              End Date is required
+            </div>
+          </mdb-error>
+        </div>
+
+        <!-- Summary -->
+        <div class="md-form mt-0 md-outline">
+          <textarea formControlName="summary" id="summaryTextArea" class="form-control md-textarea" rows="5" mdbInput mdbValidate>
+          </textarea>
+          <label for="summary">Summary</label>
+          <mdb-error *ngIf="summary.invalid && (summary.dirty || hasSubmittedAttempt)">
+            Input is Required
+          </mdb-error>
+          <mdb-success *ngIf="summary.valid && summary.dirty"></mdb-success>
+        </div>
+
+        <!-- leaflet -->
+        <h6>Click the map to create your trip!</h6>
+        <div #mapContainer id="map"></div>
+        <!-- <p id="form-error" [hidden]="!displayError">Create the trip on the map!</p>
+        <app-user-map [source]="source" [isEditing]="isEditing" (evtEmitterLocation)="updateLocation($event)"></app-user-map> -->
+
+        <!-- Register button -->
+        <button mdbBtn color="info" block="true" class="my-4" type="submit">Create Trip</button>
+
+        <!-- <p id="form-error" [hidden]="!hasSubmittedAttempt || (hasSubmittedAttempt && form.valid)">Please fix invalid fields</p> -->
+
+      </form>
+
+    </mdb-card-body>
+  </mdb-card>
+</div>

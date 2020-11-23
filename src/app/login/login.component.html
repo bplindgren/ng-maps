@@ -10,7 +10,7 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="text-center" style="color: #757575;">
 
         <!-- Username -->
-        <div class="md-form">
+        <div class="md-form md-outline">
           <input type="text" formControlName="username" class="form-control" mdbInput mdbValidate>
           <label for="username">Username</label>
           <mdb-error *ngIf="username.invalid">
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Password -->
-        <div class="md-form mt-0">
+        <div class="md-form mt-0 md-outline">
           <input type="password" formControlName="password" class="form-control" mdbInput mdbValidate>
           <label for="password">Password</label>
           <mdb-error *ngIf="password.invalid">

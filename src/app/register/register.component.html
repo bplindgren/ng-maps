@@ -12,7 +12,7 @@
         <div class="form-row">
           <div class="col">
             <!-- First name -->
-            <div class="md-form">
+            <div class="md-form md-outline">
               <input type="text" formControlName="firstName" class="form-control" mdbInput mdbValidate>
               <label for="firstName">First Name</label>
               <mdb-error *ngIf="firstName.invalid && (firstName.touched || hasSubmittedAttempt)">First Name is required</mdb-error>
@@ -20,7 +20,7 @@
           </div>
           <div class="col">
             <!-- Last name -->
-            <div class="md-form">
+            <div class="md-form md-outline">
               <input type="text" formControlName="lastName" class="form-control" mdbInput mdbValidate>
               <label for="lastName">Last Name</label>
               <mdb-error *ngIf="lastName.invalid && (lastName.touched || hasSubmittedAttempt)">Last Name is required</mdb-error>
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Username -->
-        <div class="md-form mt-0">
+        <div class="md-form mt-0 md-outline">
           <input type="text" formControlName="username" class="form-control" mdbInput mdbValidate>
           <label for="username">Username</label>
           <mdb-error *ngIf="username.invalid">
@@ -43,7 +43,7 @@
         </div>
 
         <!-- E-mail -->
-        <div class="md-form mt-0">
+        <div class="md-form mt-0 md-outline">
           <input type="email" formControlName="email" class="form-control" mdbInput mdbValidate>
           <label for="email">E-mail</label>
           <mdb-error *ngIf="email.invalid">
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Password -->
-        <div class="md-form mt-0">
+        <div class="md-form mt-0 md-outline">
           <input type="password" formControlName="password" class="form-control" aria-describedby="registerFormPasswordHelpBlock"
             mdbInput mdbValidate>
           <label for="password">Password</label>
