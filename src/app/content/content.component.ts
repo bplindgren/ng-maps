@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AxiosService } from '../axios.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-content',
@@ -8,11 +9,16 @@ import { AxiosService } from '../axios.service';
 })
 export class ContentComponent {
 	componentToShow: string = "welcome";
+  user: User;
 
 	constructor(private axiosService: AxiosService) { }
 
 	showComponent(componentToShow: string): void {
     this.componentToShow = componentToShow;
+  }
+
+  showUser(user: User): void {
+    this.user = user;
   }
 
 	onLogin(input: any): void {
@@ -25,14 +31,14 @@ export class ContentComponent {
 		    }).then(
 		    response => {
 		        this.axiosService.setAuthToken(response.data.token);
-		        this.componentToShow = "messages";
+            this.user = response.data;
+		        this.componentToShow = "user-profile";
 		    }).catch(
 		    error => {
 		        this.axiosService.setAuthToken(null);
 		        this.componentToShow = "welcome";
 		    }
 		);
-
 	}
 
 	onRegister(input: any): void {
@@ -46,8 +52,10 @@ export class ContentComponent {
 		        password: input.password
 		    }).then(
 		    response => {
+            console.log(response);
+            this.user = response.data;
 		        this.axiosService.setAuthToken(response.data.token);
-		        this.componentToShow = "messages";
+		        this.componentToShow = "user-profile";
 		    }).catch(
 		    error => {
 		        this.axiosService.setAuthToken(null);
