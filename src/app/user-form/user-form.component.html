@@ -1,30 +1,33 @@
 <div class="row justify-content-center">
-	<div class="col-4">
-	<h1>User Profile</h1>
+	<div class="col-6">
+		<h1>User Profile</h1>
+		<div class="tab-content">
 
-	<div class="tab-content">
+		  <div [ngClass]="'tab-pane fade show active'">
+		    <form (ngSubmit)="onSubmitUserUpdate()" #updateForm="ngForm">
 
-	  <div [ngClass]="'tab-pane fade show active'">
-	    <form (ngSubmit)="onSubmitUserUpdate()" #updateForm="ngForm">
+		      <div class="form-outline mb-6">
+		        <input type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="firstName" />
+		        <label class="form-label" for="firstName">First name</label>
+		      </div>
 
-	      <div class="form-outline mb-4">
-	        <input type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="firstName" />
-	        <label class="form-label" for="firstName">First name</label>
-	      </div>
+		      <div class="form-outline mb-6">
+		        <input type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="lastName" />
+		        <label class="form-label" for="lastName">Last name</label>
+		      </div>
 
-	      <div class="form-outline mb-4">
-	        <input type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="lastName" />
-	        <label class="form-label" for="lastName">Last name</label>
-	      </div>
+		      <div class="form-outline mb-6">
+		        <input type="text" id="username" name="username" class="form-control" [(ngModel)]="login" />
+		        <label class="form-label" for="username">Username</label>
+		      </div>
 
-	      <div class="form-outline mb-4">
-	        <input type="text" id="username" name="username" class="form-control" [(ngModel)]="login" />
-	        <label class="form-label" for="username">Username</label>
-	      </div>
+					<h5>Your Location</h5>
+					<div id="map" class="form-outline mb-4">
+					  <app-map [userMarkerLoc]="geographicLocation"></app-map>
+					</div>
 
-	      <!-- <button type="submit" active="isEditing" class="btn btn-primary btn-block mb-3">Update</button> -->
-	    </form>
-	  </div>
-	</div>
+		    </form>
+		  </div>
+		</div>
 	</div>
 </div>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { ContentComponent } from './content/content.component';
 
 import { AxiosService } from './axios.service';
 import { UserFormComponent } from './user-form/user-form.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +25,14 @@ import { UserFormComponent } from './user-form/user-form.component';
     WelcomeContentComponent,
     AuthContentComponent,
     ContentComponent,
-    UserFormComponent
+    UserFormComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    GoogleMapsModule
   ],
   providers: [AxiosService],
   bootstrap: [AppComponent]

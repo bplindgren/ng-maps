@@ -150,7 +150,7 @@
     symbol-observable "4.0.0"
     yargs "17.7.2"
 
-"@angular/common@^16.0.0", "@angular/common@16.0.0":
+"@angular/common@^16.0.0", "@angular/common@^16.0.0 || ^17.0.0", "@angular/common@16.0.0":
   version "16.0.0"
   resolved "https://registry.npmjs.org/@angular/common/-/common-16.0.0.tgz"
   integrity sha512-at3/xCevf2t9swX2P7K7gaSBuQPy7ZJsf37qQkYIuczzfij69r7s9NjYeA74/q3EWG9Yl2DCrhYoCW7ViXQINQ==
@@ -178,7 +178,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^16.0.0", "@angular/core@16.0.0":
+"@angular/core@^16.0.0", "@angular/core@^16.0.0 || ^17.0.0", "@angular/core@16.0.0":
   version "16.0.0"
   resolved "https://registry.npmjs.org/@angular/core/-/core-16.0.0.tgz"
   integrity sha512-scppDxtXubum6ZiGu3ogmReBtMuA5XXk5FL3YKLb3c9O7q9Z5PC8KNQ6SsaOwEb6oW+0BWXMV698p/zmd0J4tA==
@@ -190,6 +190,14 @@
   resolved "https://registry.npmjs.org/@angular/forms/-/forms-16.0.0.tgz"
   integrity sha512-avpreXyDYWf44RNM5hfi5cTXXiNwcajBURP5rLap8RPMSUi2ePlJsmi0O+3+GduNZFbtnRXIpKTj3W+GeNa0PA==
   dependencies:
+    tslib "^2.3.0"
+
+"@angular/google-maps@^16.2.14":
+  version "16.2.14"
+  resolved "https://registry.npmjs.org/@angular/google-maps/-/google-maps-16.2.14.tgz"
+  integrity sha512-1M2ct906oLsXD4cjrhMANwf96n0v41qofzXsSIgKO8ziO8lQtYJatzI742ze2QwKkxsFgBDPDQDYo9T/wIEFew==
+  dependencies:
+    "@types/google.maps" "^3.52.4"
     tslib "^2.3.0"
 
 "@angular/platform-browser-dynamic@^16.0.0":
@@ -1511,6 +1519,11 @@
     "@types/express-serve-static-core" "^4.17.33"
     "@types/qs" "*"
     "@types/serve-static" "*"
+
+"@types/google.maps@^3.52.4":
+  version "3.58.0"
+  resolved "https://registry.npmjs.org/@types/google.maps/-/google.maps-3.58.0.tgz"
+  integrity sha512-rZPrbNHoGxeY70uuQYFLGQqcz5mLd3pZy0u286GSugvN7PLFsHNRF2wN2QXtUgNiC33IC0LX+MD3LGAC3wN7Eg==
 
 "@types/http-proxy@^1.17.8":
   version "1.17.11"

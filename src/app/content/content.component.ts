@@ -42,6 +42,7 @@ export class ContentComponent {
 	}
 
 	onRegister(input: any): void {
+    console.log(input);
 		this.axiosService.request(
 		    "POST",
 		    "/register",
@@ -49,10 +50,10 @@ export class ContentComponent {
 		        firstName: input.firstName,
 		        lastName: input.lastName,
 		        login: input.login,
-		        password: input.password
+		        password: input.password,
+            location: input.geographicLocation
 		    }).then(
 		    response => {
-            console.log(response);
             this.user = response.data;
 		        this.axiosService.setAuthToken(response.data.token);
 		        this.componentToShow = "user-profile";

@@ -9,5 +9,4 @@
 	<app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)" (onSubmitRegisterEvent)="onRegister($event)"/>
   <app-user-form *ngIf="componentToShow == 'user-profile'" [user]="user"/>
   <app-auth-content *ngIf="componentToShow == 'messages'"/>
-
 </div>
