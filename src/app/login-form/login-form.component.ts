@@ -1,4 +1,6 @@
 import { EventEmitter, Component, Output } from '@angular/core';
+import { MapComponent } from '../map/map.component';
+import { GeographicLocation } from '../models/geographicLocation';
 
 @Component({
   selector: 'app-login-form',
@@ -15,6 +17,7 @@ export class LoginFormComponent {
   lastName: string = "";
   login: string = "";
   password: string = "";
+  geographicLocation: GeographicLocation;
 
 	onLoginTab(): void {
 		this.active = "login";
@@ -29,7 +32,17 @@ export class LoginFormComponent {
   }
 
   onSubmitRegister(): void {
-    this.onSubmitRegisterEvent.emit({"firstName": this.firstName, "lastName": this.lastName, "login": this.login, "password": this.password});
+    this.onSubmitRegisterEvent.emit({"firstName": this.firstName, "lastName": this.lastName, "login": this.login, "password": this.password, "geographicLocation": this.geographicLocation});
+  }
+
+  setGeographicLocationProperties(input: string): void {
+    let lng: number = Number(input.substring(input.indexOf("lng") + 6, input.length - 2));
+    let lat: number = Number(input.substring(input.indexOf("lat") + 6, input.indexOf(",")));
+    let loc: GeographicLocation = {
+      x: lng,
+      y: lat
+    }
+    this.geographicLocation = loc;
   }
 
 }
