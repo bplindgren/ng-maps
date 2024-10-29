@@ -6,5 +6,5 @@ export class User {
   firstName: string;
   lastName: string;
   token: string;
-  geographicLocation: GeographicLocation;
+  location: GeographicLocation;
 }

@@ -1,9 +1,12 @@
 <div class="row">
   <div class="col-md-12 text-center" style="marginTop: 30px">
-	  <button class="btn btn-primary" style="margin: 10px" display="user == null" (click)="loginEvent.emit()">
+	  <button class="btn btn-primary" style="margin: 10px" *ngIf="user == null" (click)="loginEvent.emit()">
       Login
     </button>
-    <button class="btn btn-dark" style="margin: 10px" display="user != null" (click)="logoutEvent.emit()">
+	  <button class="btn btn-primary" style="margin: 10px" *ngIf="user != null" (click)="loginEvent.emit()">
+      Create Trip
+    </button>
+    <button class="btn btn-dark" style="margin: 10px" *ngIf="user != null" (click)="logoutEvent.emit()">
       Logout
     </button>
   </div>

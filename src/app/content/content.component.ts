@@ -15,6 +15,10 @@ export class ContentComponent {
 
 	showComponent(componentToShow: string): void {
     this.componentToShow = componentToShow;
+    if (componentToShow == "welcome") {
+      this.user = null;
+    }
+    console.log(this.user);
   }
 
   showUser(user: User): void {
@@ -42,7 +46,6 @@ export class ContentComponent {
 	}
 
 	onRegister(input: any): void {
-    console.log(input);
 		this.axiosService.request(
 		    "POST",
 		    "/register",

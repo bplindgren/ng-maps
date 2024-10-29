@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, AfterViewInit } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { User } from '../models/user';
 import { GeographicLocation } from '../models/geographicLocation';
 
 @Component({
@@ -9,7 +10,7 @@ import { GeographicLocation } from '../models/geographicLocation';
 })
 export class MapComponent implements AfterViewInit {
 
-  @Input() userMarkerLoc: GeographicLocation;
+  @Input() user: User;
   @Output() onMapClickEvent = new EventEmitter();
 
   async initMap() {
@@ -19,15 +20,15 @@ export class MapComponent implements AfterViewInit {
     const map = new google.maps.Map(
       document.getElementById("map") as HTMLElement,
       {
-        zoom: 3,
-        center: this.userMarkerLoc ? { lng: this.userMarkerLoc.y, lat: this.userMarkerLoc.x } : { lng: -100.000, lat: 43.000 },
+        zoom: this.user ? 4 : 2,
+        center: this.user ? this.getCenter() : { lng: -100.000, lat: 43.000 },
         mapId: "759f53abbd4a188f",
       }
     );
 
     let marker = new AdvancedMarkerElement({
       map,
-      position: this.userMarkerLoc ? { lng: this.userMarkerLoc.y, lat: this.userMarkerLoc.x } : null
+      position: this.user ? this.getCenter() : null
     });
 
     map.addListener("click", (mapsMouseEvent) => {
@@ -37,8 +38,16 @@ export class MapComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.userMarkerLoc);
     this.initMap();
+  }
+
+  getCenter(): any {
+    if(this.user) {
+      let loc = this.user.location;
+      return { "lng": loc.x, "lat": loc.y };
+    } else {
+      return { lng: -100.000, lat: 43.000 };
+    }
   }
 
   onMapClick(mapsMouseEvent: any): void {
