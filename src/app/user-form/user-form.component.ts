@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { User } from '../models/user';
 import { GeographicLocation } from '../models/geographicLocation';
 import { MapComponent } from '../map/map.component';
@@ -12,7 +12,6 @@ export class UserFormComponent implements OnInit {
 
   @Input() user : User;
   @Output() onSubmitUserUpdateEvent = new EventEmitter();
-  @ViewChild(MapComponent) mapComponentRef: MapComponent;
 
 	isEditing: boolean = true;
   id: number = 0;
@@ -26,7 +25,7 @@ export class UserFormComponent implements OnInit {
     this.firstName = this.user.firstName;
     this.lastName = this.user.lastName;
     this.login = this.user.login;
-    this.geographicLocation = this.user.geographicLocation;
+    this.geographicLocation = this.user.location;
   }
 
   onSubmitUserUpdate(): void {
