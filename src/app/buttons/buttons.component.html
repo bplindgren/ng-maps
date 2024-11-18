@@ -1,12 +1,15 @@
 <div class="row">
   <div class="col-md-12 text-center" style="marginTop: 30px">
-	  <button class="btn btn-primary" style="margin: 10px" *ngIf="user == null" (click)="loginEvent.emit()">
+	  <button class="btn btn-primary" style="margin: 10px" *ngIf="user == null" (click)="loginClick()">
       Login
     </button>
-	  <button class="btn btn-primary" style="margin: 10px" *ngIf="user != null" (click)="loginEvent.emit()">
+	  <button class="btn btn-primary" style="margin: 10px" *ngIf="user != null && displayProfileButton" (click)="viewProfile()">
+      View Profile
+    </button>
+	  <button class="btn btn-success" style="margin: 10px" *ngIf="user != null && displayTripButton" (click)="createTripClick()">
       Create Trip
     </button>
-    <button class="btn btn-dark" style="margin: 10px" *ngIf="user != null" (click)="logoutEvent.emit()">
+    <button class="btn btn-dark" style="margin: 10px" *ngIf="user != null" (click)="logoutClick()">
       Logout
     </button>
   </div>

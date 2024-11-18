@@ -15,6 +15,9 @@ import { ContentComponent } from './content/content.component';
 import { AxiosService } from './axios.service';
 import { UserFormComponent } from './user-form/user-form.component';
 import { MapComponent } from './map/map.component';
+import { RegisterFormComponent } from './register-form/register-form.component';
+import { CreateTripComponent } from './create-trip/create-trip.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { MapComponent } from './map/map.component';
     AuthContentComponent,
     ContentComponent,
     UserFormComponent,
-    MapComponent
+    MapComponent,
+    RegisterFormComponent,
+    CreateTripComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
