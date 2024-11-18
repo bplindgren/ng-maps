@@ -10,7 +10,6 @@ import { HeaderComponent } from './header/header.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { WelcomeContentComponent } from './welcome-content/welcome-content.component';
 import { AuthContentComponent } from './auth-content/auth-content.component';
-import { ContentComponent } from './content/content.component';
 
 import { AxiosService } from './axios.service';
 import { UserFormComponent } from './user-form/user-form.component';
@@ -27,7 +26,6 @@ import { LogoutComponent } from './logout/logout.component';
     LoginFormComponent,
     WelcomeContentComponent,
     AuthContentComponent,
-    ContentComponent,
     UserFormComponent,
     MapComponent,
     RegisterFormComponent,
