@@ -20,7 +20,7 @@ export class MapComponent implements AfterViewInit {
     const map = new google.maps.Map(
       document.getElementById("map") as HTMLElement,
       {
-        zoom: this.user ? 4 : 2,
+        zoom: this.user ? 6 : 3,
         center: this.user ? this.getCenter() : { lng: -100.000, lat: 43.000 },
         mapId: "759f53abbd4a188f",
       }

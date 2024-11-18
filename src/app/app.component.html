@@ -3,7 +3,12 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-	      <app-content />
+        <app-buttons
+          [user]="user">
+        </app-buttons>
+        <div>
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
   </div>
